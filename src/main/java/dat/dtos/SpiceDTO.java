@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class spiceDTO {
+public class SpiceDTO {
     @JsonProperty("id")
     private long id;
     @JsonProperty("name")
