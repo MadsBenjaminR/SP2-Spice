@@ -28,6 +28,8 @@ public class Favorite {
     private User user;
 
     @ManyToMany
-    @JoinColumn(name = "cuisine_id")
+   // @JoinColumn(name = "cuisine_id")
+    @JoinTable(name = "cuisine_favorite", joinColumns = {@JoinColumn(name = "cuisine_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "favorite_id", referencedColumnName = "id")})
+
     private Set<Cuisine> cuisines;
 }

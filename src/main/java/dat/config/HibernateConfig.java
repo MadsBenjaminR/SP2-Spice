@@ -1,5 +1,9 @@
 package dat.config;
 
+import dat.entities.Cuisine;
+import dat.entities.Favorite;
+import dat.entities.Spice;
+import dat.entities.User;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -26,8 +30,12 @@ public class HibernateConfig {
     }
     // TODO: IMPORTANT: Add Entity classes here for them to be registered with Hibernate
     private static void getAnnotationConfiguration(Configuration configuration) {
-     //   configuration.addAnnotatedClass(Employee.class);
-     // configuration.addAnnotatedClass(Address.class);
+        configuration.addAnnotatedClass(Cuisine.class);
+        configuration.addAnnotatedClass(Favorite.class);
+        configuration.addAnnotatedClass(Spice.class);
+        configuration.addAnnotatedClass(User.class);
+
+
     }
 
     private static EntityManagerFactory createEMF(boolean forTest, String DBName) {
