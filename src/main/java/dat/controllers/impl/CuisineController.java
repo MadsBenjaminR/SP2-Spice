@@ -30,6 +30,9 @@ public class CuisineController implements IController<CuisineDTO, Integer> {
         this.cuisineDao = cuisineDao;
     }
 
+    public CuisineController() {
+    }
+
     @Override
     public void read(Context ctx) {
         try {
