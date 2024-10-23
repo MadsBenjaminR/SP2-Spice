@@ -16,9 +16,10 @@ public class Routes {
         return () -> {
             path("/spices", spiceRoute.getRoutes());
             path("/auth", authRoute.getRoutes());
-            //fordi vi finder users favorite spices og cuisines
+            //fordi vi finder users favorite spices og cuisines ghkjvhbkjblkjkibnkjn
             path("/users", favoriteRoute.getRoutes());
             path("/cousines", cuisineRoute.getRoutes());
+
         };
     }
 }
