@@ -2,6 +2,9 @@ package dat.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import dat.entities.Spice;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +24,12 @@ public class SpiceDTO {
     private String flavorProfile;
     @JsonProperty("description")
     private String description;
-    
+
+
+    public SpiceDTO(Spice spice) {
+        this.id = spice.getId();
+        this.name = spice.getName();
+        this.flavorProfile = spice.getFlavorProfile();
+        this.description = spice.getDescription();
+    }
 }
