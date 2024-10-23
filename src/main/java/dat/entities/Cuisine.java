@@ -21,24 +21,23 @@ import java.util.Set;
 public class Cuisine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "cuisine_id", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "description", nullable = false)
     private String description;
+
     @Column(name = "flavor_profile", nullable = false)
     private String flavorProfile;
 
-    @JoinTable(name = "cuisine_favorite", joinColumns = {@JoinColumn(name = "cuisine_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "favorite_id", referencedColumnName = "id")})
     @ManyToMany(mappedBy = "cuisines", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Favorite> favoriteSet;
 
-    @JoinTable(name = "cuisine_spice", joinColumns = {@JoinColumn(name = "cuisine_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "spice_id", referencedColumnName = "id")})
     @ManyToMany(mappedBy = "cuisineSet", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Spice> spiceSet; // = new HashSet<>();
-
 
     public Cuisine(String name, String description, String flavorProfile) {
         this.name = name;
@@ -56,23 +55,19 @@ public class Cuisine {
         }
     }
 
-
-    public Cuisine(CuisineDTO cuisineDTO) {
-    this.name = cuisineDTO.getName();
-    this.description = cuisineDTO.getDescription();
-    this.flavourProfile = cuisineDTO.getFlavourProfile();
-    this.favoriteSet = new HashSet<>();
-    this.spiceSet = new HashSet<>();
-
-    }
-
     public void setSpice(Set<Spice> spices) {
-        if(spices != null) {
+        if (spices != null) {
             this.spiceSet = spices;
             for (Spice spice : spices) {
-                spice.setCuisineSet((Set<Cuisine>) this);
+                // Initialize the cuisineSet in the Spice entity if it's null
+                if (spice.getCuisineSet() == null) {
+                    spice.setCuisineSet(new HashSet<>());
+                }
+                // Add this Cuisine instance to the Spice's cuisineSet
+                spice.getCuisineSet().add(this);
             }
         }
     }
+
 
 }

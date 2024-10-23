@@ -55,9 +55,9 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
     public void create(Context ctx) {
         try {
 
-            SpiceDTO spiceDTO = ctx.bodyAsClass(SpiceDTO.class);
+            FavoriteDTO favoriteDTO = ctx.bodyAsClass(FavoriteDTO.class);
             ctx.status(HttpStatus.CREATED);
-            ctx.json(favoriteDao.create(spiceDTO));
+            ctx.json(favoriteDao.create(favoriteDTO));
 
             // == response ==
             ctx.res().setStatus(201);
