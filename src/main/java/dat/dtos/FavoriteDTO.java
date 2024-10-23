@@ -29,7 +29,9 @@ public class FavoriteDTO {
 
     public FavoriteDTO(Favorite favorite) {
         this.id = favorite.getId();
-        this.userId = favorite.getUser().getId();
+    //    this.userId = favorite.getUser().getId();
         this.name = favorite.getName();
     }
+
+
 }
