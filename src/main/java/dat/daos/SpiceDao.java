@@ -32,7 +32,7 @@ public class SpiceDao {
             Spice spice = new Spice(spiceDTO);
             em.persist(spice);
             em.getTransaction().commit();
-            return new FavoriteDTO(spice);
+            return new SpiceDTO(spice);
         }
     }
 
@@ -56,7 +56,7 @@ public class SpiceDao {
             c.setName(spiceDTO.getName());
             Spice newspice = em.merge(c);
             em.getTransaction().commit();
-            return new CuisineDTO(newspice);
+            return new SpiceDTO(newspice);
         }
     }
 }
