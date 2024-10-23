@@ -55,6 +55,7 @@ public class Cuisine {
         }
     }
 
+
     public void setSpice(Set<Spice> spices) {
         if (spices != null) {
             this.spiceSet = spices;
