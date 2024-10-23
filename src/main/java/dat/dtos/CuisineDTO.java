@@ -2,6 +2,7 @@ package dat.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dat.entities.Cuisine;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,13 @@ public class CuisineDTO {
     private String description;
     @JsonProperty("flavour_profile")
     private String flavourProfile;
+
+    public CuisineDTO(Cuisine cuisine) {
+        this.id = cuisine.getId();
+        this.name = cuisine.getName();
+        this.description = cuisine.getDescription();
+        this.flavourProfile = cuisine.getFlavourProfile();
+    }
+
+
 }

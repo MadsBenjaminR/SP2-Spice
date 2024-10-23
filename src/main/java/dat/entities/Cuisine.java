@@ -1,5 +1,6 @@
 package dat.entities;
 
+import dat.dtos.CuisineDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,5 +36,14 @@ public class Cuisine {
     @ManyToMany(mappedBy = "cuisines", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Spice> spiceSet;
 
+
+    public Cuisine(CuisineDTO cuisineDTO) {
+    this.name = cuisineDTO.getName();
+    this.description = cuisineDTO.getDescription();
+    this.flavourProfile = cuisineDTO.getFlavourProfile();
+    this.favoriteSet = new HashSet<>();
+    this.spiceSet = new HashSet<>();
+
+    }
 
 }
