@@ -8,6 +8,9 @@ import dat.entities.Favorite;
 import dat.entities.Spice;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 /**
  * @author laith kaseb
@@ -23,6 +26,13 @@ public class SpiceDao {
         try (EntityManager em = emf.createEntityManager()) {
             Spice spice = em.find(Spice.class, integer);
             return spice != null ? new SpiceDTO(spice) : null;
+        }
+    }
+
+    public List<SpiceDTO> readAll() {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<SpiceDTO> query = em.createQuery("SELECT new dat.dtos.SpiceDTO(r) FROM Spice r", SpiceDTO.class);
+            return query.getResultList();
         }
     }
 

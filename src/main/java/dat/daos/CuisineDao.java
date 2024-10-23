@@ -4,8 +4,10 @@ import dat.dtos.CuisineDTO;
 import dat.entities.Cuisine;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author laith kaseb
@@ -22,6 +24,14 @@ public class CuisineDao {
         try (EntityManager em = emf.createEntityManager()) {
             Cuisine cuisine1 = em.find(Cuisine.class, integer);
             return cuisine1 != null ? new CuisineDTO(cuisine1) : null;
+        }
+    }
+
+
+    public List<CuisineDTO> readAll() {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<CuisineDTO> query = em.createQuery("SELECT new dat.dtos.CuisineDTO(r) FROM Cuisine r", CuisineDTO.class);
+            return query.getResultList();
         }
     }
 

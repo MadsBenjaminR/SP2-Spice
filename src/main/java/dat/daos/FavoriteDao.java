@@ -6,6 +6,9 @@ import dat.entities.Cuisine;
 import dat.entities.Favorite;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 /**
  * @author laith kaseb
@@ -21,6 +24,13 @@ public class FavoriteDao {
         try (EntityManager em = emf.createEntityManager()) {
             Favorite favorite = em.find(Favorite.class, integer);
             return favorite != null ? new FavoriteDTO(favorite) : null;
+        }
+    }
+
+    public List<FavoriteDTO> readAll() {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<FavoriteDTO> query = em.createQuery("SELECT new dat.dtos.FavoriteDTO(r) FROM Favorite r", FavoriteDTO.class);
+            return query.getResultList();
         }
     }
 

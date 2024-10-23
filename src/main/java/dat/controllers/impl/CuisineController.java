@@ -1,6 +1,7 @@
 package dat.controllers.impl;
 
 import dat.controllers.IController;
+import dat.daos.CuisineDao;
 import dat.dtos.CuisineDTO;
 import dat.dtos.SpiceDTO;
 import dat.entities.Cuisine;
@@ -21,6 +22,7 @@ import java.util.List;
 public class CuisineController implements IController<CuisineDTO, Integer> {
 
     private final Logger log = LoggerFactory.getLogger(CuisineController.class);
+    private CuisineDao cuisineDao;
 
     @Override
     public void read(Context ctx) {
@@ -40,7 +42,7 @@ public class CuisineController implements IController<CuisineDTO, Integer> {
     @Override
     public void readAll(Context ctx) {
         try {
-            List<CuisineDTO> cuisineDTOS = dao.readAll();
+            List<CuisineDTO> cuisineDTOS = cuisineDao.readAll();
             // response
             ctx.res().setStatus(200);
             ctx.json(cuisineDTOS, CuisineDTO.class);
@@ -73,8 +75,8 @@ public class CuisineController implements IController<CuisineDTO, Integer> {
             CuisineDTO cuisineDTO = ctx.bodyAsClass(CuisineDTO.class);
 
             // == querying ==
-            Cuisine cuisine = cuisineDao.getById(id);
-            cuisineDao.update(cuisine, new Cuisine(cuisineDTO));
+            int cuisineId = ctx.pathParamAsClass("id", Integer.class).get();
+            cuisineDao.update(cuisineId, cuisineDTO);
 
             // == response ==
             ctx.res().setStatus(200);

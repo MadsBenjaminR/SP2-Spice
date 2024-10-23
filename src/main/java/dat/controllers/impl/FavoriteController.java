@@ -1,6 +1,7 @@
 package dat.controllers.impl;
 
 import dat.controllers.IController;
+import dat.daos.FavoriteDao;
 import dat.dtos.FavoriteDTO;
 import dat.dtos.SpiceDTO;
 import dat.entities.Favorite;
@@ -21,6 +22,7 @@ import java.util.List;
 public class FavoriteController implements IController<FavoriteDTO, Integer> {
 
     private final Logger log = LoggerFactory.getLogger(FavoriteController.class);
+    private FavoriteDao favoriteDao;
     @Override
     public void read(Context ctx) {
         try {
@@ -39,7 +41,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
     @Override
     public void readAll(Context ctx) {
         try {
-            List<FavoriteDTO> favoriteDTOS = dao.readAll();
+            List<FavoriteDTO> favoriteDTOS = favoriteDao.readAll();
             // response
             ctx.res().setStatus(200);
             ctx.json(favoriteDTOS, FavoriteDTO.class);
@@ -55,7 +57,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
 
             SpiceDTO spiceDTO = ctx.bodyAsClass(SpiceDTO.class);
             ctx.status(HttpStatus.CREATED);
-            ctx.json(favoriteDAO.create(spiceDTO));
+            ctx.json(favoriteDao.create(spiceDTO));
 
             // == response ==
             ctx.res().setStatus(201);
@@ -72,8 +74,8 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
             FavoriteDTO favoriteDTO = ctx.bodyAsClass(FavoriteDTO.class);
 
             // == querying ==
-            Favorite favorite = favoriteDao.getById(id);
-            favoriteDao.update(favorite, new Favorite(favoriteDTO));
+            int favoriteId = ctx.pathParamAsClass("id", Integer.class).get();
+            favoriteDao.update(favoriteId, favoriteDTO);
 
             // == response ==
             ctx.res().setStatus(200);
