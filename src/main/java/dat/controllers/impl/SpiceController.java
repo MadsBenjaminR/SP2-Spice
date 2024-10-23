@@ -1,6 +1,7 @@
 package dat.controllers.impl;
 
 import dat.controllers.IController;
+import dat.daos.SpiceDao;
 import dat.dtos.SpiceDTO;
 import dat.entities.Spice;
 import dat.security.exceptions.ApiException;
@@ -19,6 +20,7 @@ import java.util.function.BiFunction;
 public class SpiceController implements IController<SpiceDTO, Integer> {
 
     private final Logger log = LoggerFactory.getLogger(SpiceController.class);
+    private SpiceDao spiceDao;
 
 
     @Override
@@ -39,7 +41,7 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
     @Override
     public void readAll(Context ctx) {
         try {
-            List<SpiceDTO> spiceDTOS = dao.readAll();
+            List<SpiceDTO> spiceDTOS = spiceDao.readAll();
             // response
             ctx.res().setStatus(200);
             ctx.json(spiceDTOS, SpiceDTO.class);
@@ -72,8 +74,8 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
             SpiceDTO spiceDTO = ctx.bodyAsClass(SpiceDTO.class);
 
             // == querying ==
-            Spice spice = spiceDao.getById(id);
-            spiceDao.update(spice, new Spice(spiceDTO));
+            int spiceId = ctx.pathParamAsClass("id", Integer.class).get();
+            spiceDao.update(spiceId, spiceDTO);
 
             // == response ==
             ctx.res().setStatus(200);
