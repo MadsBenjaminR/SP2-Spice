@@ -27,7 +27,7 @@ public class FavoriteDao {
     public FavoriteDTO create(FavoriteDTO favoriteDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Favorite favorite = new Cuisine(favoriteDTO);
+            Favorite favorite = new Favorite(favoriteDTO);
             em.persist(favorite);
             em.getTransaction().commit();
             return new FavoriteDTO(favorite);
@@ -54,7 +54,7 @@ public class FavoriteDao {
             f.setName(favoriteDTO.getName());
             Favorite newCuisine = em.merge(f);
             em.getTransaction().commit();
-            return new CuisineDTO(newCuisine);
+            return new FavoriteDTO(newCuisine);
         }
     }
 

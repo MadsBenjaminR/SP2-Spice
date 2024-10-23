@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 
 public class CuisineDao {
 
-    private static Cuisine cuisine;
     private static EntityManagerFactory emf;
 
 
