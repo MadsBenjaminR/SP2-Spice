@@ -8,6 +8,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,15 +24,19 @@ public class CuisineDTO {
     private String name;
     @JsonProperty("description")
     private String description;
-    @JsonProperty("flavour_profile")
-    private String flavourProfile;
 
-    public CuisineDTO(Cuisine cuisine) {
+    @JsonProperty("flavor_profile")
+    private String flavorProfile;
+    @JsonProperty("spices")
+    private Set<SpiceDTO> spices = new HashSet<>();
+
+    public CuisineDTO(Cuisine cuisine){
         this.id = cuisine.getId();
         this.name = cuisine.getName();
         this.description = cuisine.getDescription();
-        this.flavourProfile = cuisine.getFlavourProfile();
-    }
+        this.flavorProfile = cuisine.getFlavorProfile();
 
+        this.spices = cuisine.getSpiceSet().stream().map(SpiceDTO::new).collect(Collectors.toSet());
+    }
 
 }
