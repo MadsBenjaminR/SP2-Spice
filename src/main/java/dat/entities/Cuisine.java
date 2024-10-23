@@ -56,6 +56,16 @@ public class Cuisine {
         }
     }
 
+
+    public Cuisine(CuisineDTO cuisineDTO) {
+    this.name = cuisineDTO.getName();
+    this.description = cuisineDTO.getDescription();
+    this.flavourProfile = cuisineDTO.getFlavourProfile();
+    this.favoriteSet = new HashSet<>();
+    this.spiceSet = new HashSet<>();
+
+    }
+
     public void setSpice(Set<Spice> spices) {
         if(spices != null) {
             this.spiceSet = spices;
@@ -64,4 +74,5 @@ public class Cuisine {
             }
         }
     }
+
 }

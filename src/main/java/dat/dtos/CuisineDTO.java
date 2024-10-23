@@ -24,6 +24,7 @@ public class CuisineDTO {
     private String name;
     @JsonProperty("description")
     private String description;
+
     @JsonProperty("flavor_profile")
     private String flavorProfile;
     @JsonProperty("spices")
@@ -37,4 +38,5 @@ public class CuisineDTO {
 
         this.spices = cuisine.getSpiceSet().stream().map(SpiceDTO::new).collect(Collectors.toSet());
     }
+
 }
