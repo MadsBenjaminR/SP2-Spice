@@ -1,10 +1,13 @@
 package dat.daos;
 
+import dat.controllers.impl.CuisineController;
 import dat.dtos.CuisineDTO;
 import dat.entities.Cuisine;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,13 +19,18 @@ import java.util.List;
 
 public class CuisineDao {
 
+    private final Logger log = LoggerFactory.getLogger(CuisineController.class);
+
     private static EntityManagerFactory emf;
 
+    public CuisineDao(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
 
-    public CuisineDTO read(Integer integer) {
+    public CuisineDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Cuisine cuisine1 = em.find(Cuisine.class, integer);
-            return cuisine1 != null ? new CuisineDTO(cuisine1) : null;
+            Cuisine cuisine = em.find(Cuisine.class, id);
+            return new CuisineDTO(cuisine);
         }
     }
 
@@ -35,20 +43,32 @@ public class CuisineDao {
     }
 
     public CuisineDTO create(CuisineDTO cuisineDTO) {
+        Cuisine cuisine = null;
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Cuisine cuisine = new Cuisine(cuisineDTO);
-            em.persist(cuisine);
+            if (cuisineDTO.getId()  != 0) {
+                // If it already exists, use merge instead of persist
+                cuisine = em.merge(new Cuisine(cuisineDTO));
+            } else {
+                // If it's a new entity, persist it
+                cuisine = new Cuisine(cuisineDTO);
+                em.persist(cuisine);
+            }
+
             em.getTransaction().commit();
-            return new CuisineDTO(cuisine);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
         }
+        return new CuisineDTO(cuisine);
+
     }
 
 
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Cuisine cuisine = em.find(Cuisine.class, integer);
+            Cuisine cuisine = em.find(Cuisine.class, id);
             if (cuisine != null){
                 em.remove(cuisine);
             }
@@ -57,11 +77,11 @@ public class CuisineDao {
     }
 
 
-    public CuisineDTO update(Integer integer, CuisineDTO cuisineDTO) {
+    public CuisineDTO update(Long id, CuisineDTO cuisineDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
 
-            Cuisine c = em.find(Cuisine.class, integer);
+            Cuisine c = em.find(Cuisine.class, id);
             c.setName(cuisineDTO.getName());
             c.setDescription(cuisineDTO.getDescription());
             Cuisine newCuisine = em.merge(c);

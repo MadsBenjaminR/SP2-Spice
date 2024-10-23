@@ -26,7 +26,7 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
     @Override
     public void read(Context ctx) {
         try {
-            int id = ctx.pathParamAsClass("id", Integer.class).get();
+            Long id = ctx.pathParamAsClass("id", Long.class).get();
 
             SpiceDTO spiceDTO = spiceDao.read(id);
             ctx.res().setStatus(200);
@@ -74,7 +74,7 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
             SpiceDTO spiceDTO = ctx.bodyAsClass(SpiceDTO.class);
 
             // == querying ==
-            int spiceId = ctx.pathParamAsClass("id", Integer.class).get();
+            Long spiceId = ctx.pathParamAsClass("id", Long.class).get();
             spiceDao.update(spiceId, spiceDTO);
 
             // == response ==
@@ -88,7 +88,7 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
     @Override
     public void delete(Context ctx) {
         try {
-            int id = ctx.pathParamAsClass("id", Integer.class).get();
+            Long id = ctx.pathParamAsClass("id", Long.class).get();
             // entity
             spiceDao.delete(id);
             // response

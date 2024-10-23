@@ -20,9 +20,9 @@ public class FavoriteDao {
     private static EntityManagerFactory emf;
 
 
-    public FavoriteDTO read(Integer integer) {
+    public FavoriteDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Favorite favorite = em.find(Favorite.class, integer);
+            Favorite favorite = em.find(Favorite.class, id);
             return favorite != null ? new FavoriteDTO(favorite) : null;
         }
     }
@@ -45,10 +45,10 @@ public class FavoriteDao {
     }
 
 
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Favorite favorite = em.find(Favorite.class, integer);
+            Favorite favorite = em.find(Favorite.class, id);
             if (favorite != null){
                 em.remove(favorite);
             }
@@ -56,11 +56,11 @@ public class FavoriteDao {
         }
     }
 
-    public FavoriteDTO update(Integer integer, FavoriteDTO favoriteDTO) {
+    public FavoriteDTO update(Long id, FavoriteDTO favoriteDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
 
-            Favorite f = em.find(Favorite.class, integer);
+            Favorite f = em.find(Favorite.class, id);
             f.setName(favoriteDTO.getName());
             Favorite newCuisine = em.merge(f);
             em.getTransaction().commit();

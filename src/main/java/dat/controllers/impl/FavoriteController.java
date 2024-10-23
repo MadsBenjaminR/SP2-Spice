@@ -26,7 +26,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
     @Override
     public void read(Context ctx) {
         try {
-            int id = ctx.pathParamAsClass("id", Integer.class).get();
+            Long id = ctx.pathParamAsClass("id", Long.class).get();
 
             FavoriteDTO favoriteDTO = favoriteDao.read(id);
             ctx.res().setStatus(200);
@@ -74,7 +74,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
             FavoriteDTO favoriteDTO = ctx.bodyAsClass(FavoriteDTO.class);
 
             // == querying ==
-            int favoriteId = ctx.pathParamAsClass("id", Integer.class).get();
+            Long favoriteId = ctx.pathParamAsClass("id", Long.class).get();
             favoriteDao.update(favoriteId, favoriteDTO);
 
             // == response ==
@@ -88,7 +88,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
     @Override
     public void delete(Context ctx) {
         try {
-            int id = ctx.pathParamAsClass("id", Integer.class).get();
+            Long id = ctx.pathParamAsClass("id", Long.class).get();
             // entity
             favoriteDao.delete(id);
             // response
