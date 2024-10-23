@@ -1,5 +1,6 @@
 package dat.security.entities;
 
+import dat.entities.Favorite;
 import jakarta.persistence.*;
 import lombok.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -27,6 +28,9 @@ public class User implements Serializable, ISecurityUser {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "user_id")
+    private long id;
     @Basic(optional = false)
     @Column(name = "username", length = 25)
     private String username;
@@ -37,6 +41,10 @@ public class User implements Serializable, ISecurityUser {
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Favorite> favorites = new HashSet<>();
+
 
     public Set<String> getRolesAsStrings() {
         if (roles.isEmpty()) {
@@ -62,6 +70,8 @@ public class User implements Serializable, ISecurityUser {
         this.username = userName;
         this.roles = roleEntityList;
     }
+
+
 
     public void addRole(Role role) {
         if (role == null) {

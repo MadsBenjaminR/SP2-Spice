@@ -3,7 +3,8 @@ package dat.config;
 import dat.entities.Cuisine;
 import dat.entities.Favorite;
 import dat.entities.Spice;
-import dat.entities.User;
+import dat.security.entities.Role;
+import dat.security.entities.User;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -34,6 +35,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(Favorite.class);
         configuration.addAnnotatedClass(Spice.class);
         configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Role.class);
 
 
     }

@@ -2,6 +2,8 @@ package dat.config;
 
 import dat.entities.Cuisine;
 import dat.entities.Spice;
+import dat.security.entities.User;
+import dat.security.enums.Role;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.Set;
@@ -21,6 +23,8 @@ public class Populate {
         Set<Spice> ethiopianSpice = getEthiopianSpice();
         Set<Spice> morrocanSpice = getMorrocanSpice();
         Set<Spice> carribbeanSpice = getCarribbeanSpice();
+
+
 
 
         try (var em = emf.createEntityManager()) {
@@ -48,6 +52,17 @@ public class Populate {
             morrocanCuisine.setSpice(morrocanSpice);
             carribbeanCuisine.setSpice(carribbeanSpice);
 
+            //users
+            User user1 = new User("user1", "password1");
+            User user2 = new User("user2", "password2");
+            User admin = new User("admin", "admin");
+            User both = new User("user_admin", "test");
+
+            em.persist(user1);
+            em.persist(user2);
+            em.persist(admin);
+            em.persist(both);
+
             em.persist(indianCuisne);
             em.persist(middleEasternCuisine);
             em.persist(mexicanCuisine);
@@ -58,6 +73,7 @@ public class Populate {
             em.persist(ethiopianCuisine);
             em.persist(morrocanCuisine);
             em.persist(carribbeanCuisine);
+
 
             em.getTransaction().commit();
         }
@@ -180,4 +196,5 @@ public class Populate {
 
         return Set.of(spiceArray);
     }
+
 }
