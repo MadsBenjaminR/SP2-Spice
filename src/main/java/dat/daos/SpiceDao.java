@@ -40,6 +40,13 @@ public class SpiceDao {
         }
     }
 
+    public SpiceDTO readByName(String name){
+        try (EntityManager em = emf.createEntityManager()) {
+            Spice spice = em.find(Spice.class, name);
+            return spice != null ? new SpiceDTO(spice) : null;
+        }
+    }
+
     public SpiceDTO create(SpiceDTO spiceDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
@@ -56,10 +63,10 @@ public class SpiceDao {
     }
 
 
-    public void delete(Long id) {
+    public void delete(String name) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Spice spice = em.find(Spice.class, id);
+            Spice spice = em.find(Spice.class, name);
             if (spice != null){
                 em.remove(spice);
             }
@@ -67,11 +74,11 @@ public class SpiceDao {
         }
     }
 
-    public SpiceDTO update(Long id, SpiceDTO spiceDTO) {
+    public SpiceDTO update(String name, SpiceDTO spiceDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
 
-            Spice c = em.find(Spice.class, id);
+            Spice c = em.find(Spice.class, name);
             c.setName(spiceDTO.getName());
             Spice newspice = em.merge(c);
             em.getTransaction().commit();
