@@ -23,12 +23,14 @@ public class SpiceRoute {
             get("/", spiceController::readAll);
             get("/spice/{id}", spiceController::read);
             //disse skal udvikles:
+
             get("/search", spiceController::read);
             get("/filter", spiceController::read);
             get("/recommendations", spiceController::read);
+
             //
-            put("/spice/{id}", spiceController::update);
-            delete("/spice/{id}", spiceController::delete);
+            put("/spice/{name}", spiceController::update);
+            delete("/spice/{name}", spiceController::delete);
         };
     }
 }

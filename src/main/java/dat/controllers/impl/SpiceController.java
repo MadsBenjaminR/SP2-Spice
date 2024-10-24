@@ -3,7 +3,6 @@ package dat.controllers.impl;
 import dat.controllers.IController;
 import dat.daos.SpiceDao;
 import dat.dtos.SpiceDTO;
-import dat.entities.Spice;
 import dat.security.exceptions.ApiException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 /**
 *Purpose: 
@@ -43,6 +41,19 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
             throw new ApiException(400, e.getMessage());
         }
 
+    }
+    @Override
+    public void readByName(Context ctx) {
+        try {
+            String name = ctx.pathParamAsClass("name", String.class).get();
+
+            SpiceDTO spiceDTO = spiceDao.readByName(name);
+            ctx.res().setStatus(200);
+            ctx.json(spiceDTO, SpiceDTO.class);
+        } catch (Exception e) {
+            log.error("400{}",e.getMessage());
+            throw new ApiException(400, e.getMessage());
+        }
     }
 
     @Override
@@ -77,12 +88,11 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
     @Override
     public void update(Context ctx) {
         try {
-            long id = Long.parseLong(ctx.pathParam("id"));
             SpiceDTO spiceDTO = ctx.bodyAsClass(SpiceDTO.class);
 
             // == querying ==
-            Long spiceId = ctx.pathParamAsClass("id", Long.class).get();
-            spiceDao.update(spiceId, spiceDTO);
+            String spiceName = ctx.pathParamAsClass("name", String.class).get();
+            spiceDao.update(spiceName, spiceDTO);
 
             // == response ==
             ctx.res().setStatus(200);
@@ -95,9 +105,9 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
     @Override
     public void delete(Context ctx) {
         try {
-            Long id = ctx.pathParamAsClass("id", Long.class).get();
+            String name = ctx.pathParamAsClass("name", String.class).get();
             // entity
-            spiceDao.delete(id);
+            spiceDao.delete(name);
             // response
             ctx.res().setStatus(204);
         } catch (Exception e) {
