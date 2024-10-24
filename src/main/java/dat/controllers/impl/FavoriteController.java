@@ -46,6 +46,11 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
     }
 
     @Override
+    public void readByName(Context ctx) {
+
+    }
+
+    @Override
     public void readAll(Context ctx) {
         try {
             List<FavoriteDTO> favoriteDTOS = favoriteDao.readAll();
