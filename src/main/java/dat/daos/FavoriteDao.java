@@ -19,6 +19,9 @@ public class FavoriteDao {
 
     private static EntityManagerFactory emf;
 
+    public FavoriteDao(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
 
     public FavoriteDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
