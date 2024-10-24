@@ -91,8 +91,8 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
             SpiceDTO spiceDTO = ctx.bodyAsClass(SpiceDTO.class);
 
             // == querying ==
-            String spiceName = ctx.pathParamAsClass("name", String.class).get();
-            spiceDao.update(spiceName, spiceDTO);
+            Long id = ctx.pathParamAsClass("id", long.class).get();
+            spiceDao.update(id, spiceDTO);
 
             // == response ==
             ctx.res().setStatus(200);
@@ -105,9 +105,9 @@ public class SpiceController implements IController<SpiceDTO, Integer> {
     @Override
     public void delete(Context ctx) {
         try {
-            String name = ctx.pathParamAsClass("name", String.class).get();
+            Long id = ctx.pathParamAsClass("id", Long.class).get();
             // entity
-            spiceDao.delete(name);
+            spiceDao.delete(id);
             // response
             ctx.res().setStatus(204);
         } catch (Exception e) {

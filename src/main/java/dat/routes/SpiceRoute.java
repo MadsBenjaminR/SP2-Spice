@@ -29,8 +29,8 @@ public class SpiceRoute {
             get("/recommendations", spiceController::read);
 
             //
-            put("/spice/{name}", spiceController::update);
-            delete("/spice/{name}", spiceController::delete);
+            put("/spice/{id}", spiceController::update);
+            delete("/spice/{id}", spiceController::delete);
         };
     }
 }
