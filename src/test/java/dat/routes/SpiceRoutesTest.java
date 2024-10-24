@@ -18,6 +18,6 @@ public class SpiceRoutesTest {
     private static final SpiceDao spiceDao = new SpiceDao(emf);
     private static final String BASE_URL = "http://localhost:7080/api/";
 
-    private static SpiceDto s1, s2, s3;
+    //private static SpiceDto s1, s2, s3;
 
 }
