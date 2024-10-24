@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
-    @JsonProperty("id")
-    private long id;
+    //@JsonProperty("id")
+    //private long id;
     @JsonProperty("username")
     private String username;
     @JsonProperty("password")
