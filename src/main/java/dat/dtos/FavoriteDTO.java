@@ -17,8 +17,8 @@ import java.util.Set;
 public class FavoriteDTO {
     @JsonProperty("id")
     private long id;
-    @JsonProperty("user_id")
-    private long userId;
+    @JsonProperty("username")
+    private String username;
     @JsonProperty("name")
     private String name;
 
