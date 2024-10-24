@@ -21,6 +21,10 @@ public class SpiceDao {
 
     private static EntityManagerFactory emf;
 
+    public SpiceDao(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
+
 
     public SpiceDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
@@ -40,7 +44,12 @@ public class SpiceDao {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Spice spice = new Spice(spiceDTO);
-            em.persist(spice);
+            if (spiceDTO.getId() != 0) {
+                spice = em.merge(spice);
+            } else {
+                em.persist(spice);
+            }
+            //em.persist(spice);
             em.getTransaction().commit();
             return new SpiceDTO(spice);
         }

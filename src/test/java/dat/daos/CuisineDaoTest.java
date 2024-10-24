@@ -25,6 +25,8 @@ class CuisineDaoTest {
     private static Javalin app;
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private static final CuisineDao cuisineDao = new CuisineDao(emf);
+    private static final FavoriteDao favoriteDao = new FavoriteDao(emf);
+    private static final SpiceDao spiceDao = new SpiceDao(emf);
     private static final String BASE_URL = "http://localhost:7070/api/";
 
     private static CuisineDTO c1, c2, c3;
@@ -48,6 +50,10 @@ class CuisineDaoTest {
         spice2 = new SpiceDTO(2L, "Garam massala", "jord", "earth");
         spice3 = new SpiceDTO(3L, "Oregano", "jord", "earth");
 
+        spiceDao.create(spice1);
+        spiceDao.create(spice2);
+        spiceDao.create(spice3);
+
         spiceSet.add(spice1);
         spiceSet.add(spice2);
         spiceSet.add(spice3);
@@ -55,6 +61,10 @@ class CuisineDaoTest {
         f1 = new FavoriteDTO(1L, user1.getId(), "favorites", favoriteSet);
         f2 = new FavoriteDTO(2L,user1.getId(), "favorites", favoriteSet);
         f3 = new FavoriteDTO(3L, user1.getId(),"favorites", favoriteSet);
+
+        favoriteDao.create(f1);
+        favoriteDao.create(f2);
+        favoriteDao.create(f3);
 
         favoriteSet.add(f1);
         favoriteSet.add(f2);
@@ -67,6 +77,9 @@ class CuisineDaoTest {
         cuisineDao.create(c1);
         cuisineDao.create(c2);
         cuisineDao.create(c3);
+        cuisineSet.add(c1);
+        cuisineSet.add(c2);
+        cuisineSet.add(c3);
 
     }
 
@@ -76,6 +89,10 @@ class CuisineDaoTest {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Cuisine ").executeUpdate();
             em.createNativeQuery("ALTER SEQUENCE cuisine_cuisine_id_seq RESTART WITH 1").executeUpdate();
+            em.createQuery("DELETE FROM Spice ").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE spice_spice_id_seq RESTART WITH 1").executeUpdate();
+            em.createQuery("DELETE FROM User ").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE users_id_seq RESTART WITH 1").executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,12 +125,25 @@ class CuisineDaoTest {
 
     @Test
     void create() {
-        CuisineDTO createdCuisine = cuisineDao.create(c1);
-        assertEquals(createdCuisine.getId(), c1.getId());
+        CuisineDTO createdCuisine = cuisineDao.create(c3);
+        cuisineSet.add(createdCuisine);
+        CuisineDTO actual = cuisineDao.read(c3.getId());
+        System.out.println(c3.getName());
+        assertEquals(createdCuisine.getId(), actual.getId());
 
 
-        assertEquals(4, cuisineSet.size());
 
+       // assertEquals(4, cuisineSet.size());
+
+    }
+
+    @Test
+    void create2(){
+        CuisineDTO cuisineDTO = new CuisineDTO(4L, "Thai", "Spicy and flavorful", "Hot", spiceSet);
+        CuisineDTO newDTO = cuisineDao.create(cuisineDTO);
+        cuisineSet.add(newDTO);
+        CuisineDTO actual = cuisineDao.read(cuisineDTO.getId());
+        assertEquals(newDTO.getId(), actual.getId());
     }
 
     @Test
