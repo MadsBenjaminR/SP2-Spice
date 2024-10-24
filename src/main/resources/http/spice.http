@@ -1,0 +1,34 @@
+GET {{url}}
+
+###
+
+GET {{url}}/spice/2
+
+###
+
+POST {{url}}/spice
+Content-Type: application/json
+
+{
+  "name": "Pepperroot",
+  "description": "usage as freshly ground pepperroot",
+  "flavorProfile": "spicy"
+}
+
+###
+
+
+PUT {{url}}/spice/Cinnamon
+Content-Type: application/json
+
+{
+  "name": "Cinnamon",
+  "description": "usage as freshly ground cinnamon",
+  "flavorProfile": "sweet"
+}
+
+###
+
+DELETE {{url}}/spice/Cinnamon
+
+###

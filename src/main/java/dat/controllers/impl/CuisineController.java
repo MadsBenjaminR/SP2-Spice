@@ -49,6 +49,11 @@ public class CuisineController implements IController<CuisineDTO, Integer> {
     }
 
     @Override
+    public void readByName(Context ctx) {
+
+    }
+
+    @Override
     public void readAll(Context ctx) {
         try {
             List<CuisineDTO> cuisineDTOS = cuisineDao.readAll();
