@@ -7,6 +7,7 @@ import dat.entities.Spice;
 import dat.security.exceptions.ApiException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,13 @@ import java.util.function.BiFunction;
 public class SpiceController implements IController<SpiceDTO, Integer> {
 
     private final Logger log = LoggerFactory.getLogger(SpiceController.class);
+    private EntityManagerFactory emf;
     private SpiceDao spiceDao;
+
+
+    public SpiceController(SpiceDao spiceDao) {
+        this.spiceDao = spiceDao;
+    }
 
 
     @Override

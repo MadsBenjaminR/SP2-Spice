@@ -39,7 +39,7 @@ class CuisineDaoTest {
 
     @BeforeAll
     static void setupAll(){
-        app = ApplicationConfig.startServer(7080);
+        app = ApplicationConfig.startServer(7080, emf);
     }
 
     @BeforeEach

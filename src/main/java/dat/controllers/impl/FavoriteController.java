@@ -9,6 +9,7 @@ import dat.entities.Spice;
 import dat.security.exceptions.ApiException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,12 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
 
     private final Logger log = LoggerFactory.getLogger(FavoriteController.class);
     private FavoriteDao favoriteDao;
+    EntityManagerFactory emf;
+
+    public FavoriteController(FavoriteDao favoriteDao){
+        this.favoriteDao= favoriteDao;
+    }
+
     @Override
     public void read(Context ctx) {
         try {
