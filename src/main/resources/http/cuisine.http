@@ -1,0 +1,34 @@
+GET {{url}}/cuisines/
+
+###
+
+GET {{url}}/cuisines/cuisine/1
+
+###
+
+POST {{url}}/cuisines/cuisine
+Content-Type: application/json
+
+{
+  "name": "Danish",
+  "description": "salty and savory",
+  "flavor_profile": "salty"
+}
+
+###
+
+
+PUT {{url}}/cuisines/cuisine/3
+Content-Type: application/json
+
+{
+  "name": "Indian2",
+  "description": "updated description",
+  "flavor_profile": "Complex, warm, spicy, and aromatic"
+}
+
+###
+
+DELETE {{url}}/cuisines/cuisine/1
+
+###

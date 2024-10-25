@@ -27,7 +27,7 @@ public class Routes {
             
             //fordi vi finder users favorite spices og cuisines ghkjvhbkjblkjkibnkjn
             path("/users", favoriteRoute.getRoutes());
-            path("/cousines", cuisineRoute.getRoutes());
+            path("/cuisines", cuisineRoute.getRoutes());
 
         };
     }
