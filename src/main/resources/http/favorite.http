@@ -1,0 +1,14 @@
+GET {{url}}/users/
+###
+
+POST {{url}}/users/user2/favorites
+Content-Type: application/json
+
+{
+  "username": "hej",
+  "name": "abc"
+}
+
+###
+GET {{url}}/users/2/favorites
+
