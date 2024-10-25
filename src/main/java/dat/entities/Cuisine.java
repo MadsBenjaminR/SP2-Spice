@@ -46,7 +46,6 @@ public class Cuisine {
     }
 
     public Cuisine(CuisineDTO cuisineDTO) {
-        this.id = cuisineDTO.getId();
         this.name = cuisineDTO.getName();
         this.description = cuisineDTO.getDescription();
         this.flavorProfile = cuisineDTO.getFlavorProfile();

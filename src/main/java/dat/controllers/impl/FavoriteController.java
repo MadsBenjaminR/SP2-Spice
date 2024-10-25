@@ -6,6 +6,8 @@ import dat.dtos.FavoriteDTO;
 import dat.dtos.SpiceDTO;
 import dat.entities.Favorite;
 import dat.entities.Spice;
+import dat.security.daos.SecurityDAO;
+import dat.security.entities.User;
 import dat.security.exceptions.ApiException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -68,13 +70,14 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
         try {
 
             FavoriteDTO favoriteDTO = ctx.bodyAsClass(FavoriteDTO.class);
-            ctx.status(HttpStatus.CREATED);
-            ctx.json(favoriteDao.create(favoriteDTO));
+            String username = ctx.pathParam("username");
+            User user = SecurityDAO.getUserFromUsername(username);
 
-            // == response ==
-            ctx.res().setStatus(201);
+
+            ctx.status(HttpStatus.CREATED);
+            ctx.json(favoriteDao.create(favoriteDTO, user));
+
         } catch (Exception e) {
-            log.error("400{}",e.getMessage());
             throw new ApiException(400, e.getMessage());
         }
     }

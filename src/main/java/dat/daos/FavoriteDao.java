@@ -2,8 +2,12 @@ package dat.daos;
 
 import dat.dtos.CuisineDTO;
 import dat.dtos.FavoriteDTO;
+import dat.dtos.UserDTO;
 import dat.entities.Cuisine;
 import dat.entities.Favorite;
+import dat.security.entities.User;
+import dat.security.exceptions.ApiException;
+import io.javalin.http.Context;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -37,15 +41,27 @@ public class FavoriteDao {
         }
     }
 
-    public FavoriteDTO create(FavoriteDTO favoriteDTO) {
+    public FavoriteDTO create(FavoriteDTO favoriteDTO, User user) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Favorite favorite = new Favorite(favoriteDTO);
-            em.persist(favorite);
+
+            if(favoriteDTO.getUsername() != null) {
+                em.merge(favoriteDTO);
+            }else {
+                favorite.setUser(user);
+                em.persist(favorite);
+
+            }
             em.getTransaction().commit();
             return new FavoriteDTO(favorite);
+
         }
+
     }
+
+
+
 
 
     public void delete(Long id) {
@@ -70,6 +86,7 @@ public class FavoriteDao {
             return new FavoriteDTO(newCuisine);
         }
     }
+
 
 }
 

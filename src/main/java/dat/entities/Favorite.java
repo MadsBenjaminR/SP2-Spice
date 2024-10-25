@@ -3,9 +3,7 @@ package dat.entities;
 import dat.dtos.FavoriteDTO;
 import dat.security.entities.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +20,7 @@ import java.util.Set;
 @Table(name = "favorite")
 public class Favorite {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favorite_id")
     private Long id;
 
@@ -46,7 +45,7 @@ public class Favorite {
     private Set<Spice> spices = new HashSet<>();
 
     public Favorite(FavoriteDTO favoriteDTO) {
-        this.id = favoriteDTO.getId();
         this.name = favoriteDTO.getName();
+
     }
 }

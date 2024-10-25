@@ -23,7 +23,6 @@ public class Routes {
     public EndpointGroup getRoutes() {
         return () -> {
             path("/spices", spiceRoute.getRoutes());
-            path("/auth", authRoute.getSecuredRoutes());
             path("/auth", authRoute.getSecurityRoutes());
             
             //fordi vi finder users favorite spices og cuisines ghkjvhbkjblkjkibnkjn

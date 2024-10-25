@@ -47,7 +47,6 @@ public class Spice {
     }
 
     public Spice(SpiceDTO spiceDTO){
-        this.id = spiceDTO.getId();
         this.name = spiceDTO.getName();
         this.description = spiceDTO.getDescription();
         this.flavorProfile = spiceDTO.getFlavorProfile();
