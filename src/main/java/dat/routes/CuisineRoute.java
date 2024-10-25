@@ -7,8 +7,7 @@ import dat.daos.SpiceDao;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class CuisineRoute {
 
@@ -23,8 +22,11 @@ public class CuisineRoute {
 
         return () -> {
             //Usercontroller skal laves og metoderne skal laves
-            post("/", cuisineController::create);
-            get("/", cuisineController::read);
+            post("/cuisine", cuisineController::create);
+            get("/", cuisineController::readAll);
+            get("/cuisine/{id}", cuisineController::read);
+            put("/cuisine/{id}", cuisineController::update);
+            delete("/cuisine/{id}", cuisineController::delete);
 
         };
     }

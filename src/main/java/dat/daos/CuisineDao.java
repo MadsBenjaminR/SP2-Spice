@@ -3,6 +3,7 @@ package dat.daos;
 import dat.controllers.impl.CuisineController;
 import dat.dtos.CuisineDTO;
 import dat.entities.Cuisine;
+import dat.security.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -43,25 +44,18 @@ public class CuisineDao {
     }
 
     public CuisineDTO create(CuisineDTO cuisineDTO) {
-        Cuisine cuisine = null;
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            if (cuisineDTO.getId()  != 0) {
-                // If it already exists, use merge instead of persist
-                cuisine = em.merge(new Cuisine(cuisineDTO));
+            Cuisine cuisine = new Cuisine(cuisineDTO);
+            if (cuisineDTO.getName() != null) {
+                cuisine = em.merge(cuisine);
             } else {
-                // If it's a new entity, persist it
-                cuisine = new Cuisine(cuisineDTO);
+
                 em.persist(cuisine);
             }
-
             em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
+            return new CuisineDTO(cuisine);
         }
-        return new CuisineDTO(cuisine);
-
     }
 
 
