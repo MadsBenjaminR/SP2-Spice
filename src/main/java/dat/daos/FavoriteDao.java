@@ -2,9 +2,11 @@ package dat.daos;
 
 import dat.dtos.CuisineDTO;
 import dat.dtos.FavoriteDTO;
+import dat.dtos.SpiceDTO;
 import dat.dtos.UserDTO;
 import dat.entities.Cuisine;
 import dat.entities.Favorite;
+import dat.entities.Spice;
 import dat.security.entities.User;
 import dat.security.exceptions.ApiException;
 import io.javalin.http.Context;
@@ -13,6 +15,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author laith kaseb
@@ -88,5 +91,45 @@ public class FavoriteDao {
     }
 
 
+    public FavoriteDTO createSpiceFavoriteList(List<FavoriteDTO> favoriteDTOList, SpiceDTO spiceDTO) {
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+
+            // Find user and spice entities in the database
+            Spice spiceEntity = em.find(Spice.class, spiceDTO.getId());
+
+            if (spiceEntity == null) {
+                throw new IllegalArgumentException("Spice not found.");
+            }
+            Favorite favorite = new Favorite();
+            if (favoriteDTOList.size() > 0) {
+                for (FavoriteDTO favoriteDTO : favoriteDTOList) {
+                    favorite.setId(favoriteDTO.getId());
+                    favorite.setId(spiceDTO.getId());
+                }
+
+            }
+
+            // Persist the favorite entity
+            em.persist(favorite);
+
+            // Commit the transaction
+            em.getTransaction().commit();
+
+            return new FavoriteDTO(favorite);
+
+        }
+
+
+        }
+
+    public List<FavoriteDTO> getFavoriteFromUser(User user) {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<FavoriteDTO> query = em.createQuery("select f from Favorite f WHERE f.user  = :user", FavoriteDTO.class);
+            query.setParameter("user", user);
+
+            return query.getResultList();
+        }
+    }
 }
 

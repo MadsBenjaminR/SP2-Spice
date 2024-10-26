@@ -26,7 +26,7 @@ public class SpiceDao {
     }
 
 
-    public SpiceDTO read(Long id) {
+    public static SpiceDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             Spice spice = em.find(Spice.class, id);
             return spice != null ? new SpiceDTO(spice) : null;

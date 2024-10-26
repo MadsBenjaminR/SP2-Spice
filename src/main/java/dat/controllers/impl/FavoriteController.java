@@ -2,6 +2,7 @@ package dat.controllers.impl;
 
 import dat.controllers.IController;
 import dat.daos.FavoriteDao;
+import dat.daos.SpiceDao;
 import dat.dtos.FavoriteDTO;
 import dat.dtos.SpiceDTO;
 import dat.entities.Favorite;
@@ -26,6 +27,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
 
     private final Logger log = LoggerFactory.getLogger(FavoriteController.class);
     private FavoriteDao favoriteDao;
+    private SpiceDao spiceDao;
     EntityManagerFactory emf;
 
     public FavoriteController(FavoriteDao favoriteDao){
@@ -35,7 +37,8 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
     @Override
     public void read(Context ctx) {
         try {
-            Long id = ctx.pathParamAsClass("id", Long.class).get();
+            Long id = Long.valueOf(ctx.pathParam("userId"));
+
 
             FavoriteDTO favoriteDTO = favoriteDao.read(id);
             ctx.res().setStatus(200);
@@ -81,6 +84,28 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
             throw new ApiException(400, e.getMessage());
         }
     }
+    public void createSpiceFavorite(Context ctx){
+        try {
+            String username = ctx.pathParam("username");
+            Long spiceId = Long.valueOf(ctx.pathParam("spiceId"));
+
+            User user = SecurityDAO.getUserFromUsername(username);
+            SpiceDTO getSpiceFromSpiceId=SpiceDao.read(spiceId);
+            List<FavoriteDTO> favoriteList=favoriteDao.getFavoriteFromUser(user);
+            System.out.println(favoriteList.get(1).getId());
+
+
+
+            ctx.status(HttpStatus.CREATED);
+            ctx.json(favoriteDao.createSpiceFavoriteList(favoriteList,getSpiceFromSpiceId));
+
+
+
+        } catch (Exception e) {
+            throw new ApiException(400, e.getMessage());
+        }
+    }
+
 
     @Override
     public void update(Context ctx) {
@@ -103,7 +128,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
     @Override
     public void delete(Context ctx) {
         try {
-            Long id = ctx.pathParamAsClass("id", Long.class).get();
+            Long id = ctx.pathParamAsClass("userId", Long.class).get();
             // entity
             favoriteDao.delete(id);
             // response

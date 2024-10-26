@@ -28,6 +28,7 @@ public class Favorite {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "user_username", referencedColumnName = "username")
     private User user;
 
     @ManyToMany
