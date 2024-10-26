@@ -4,6 +4,7 @@ import dat.controllers.impl.FavoriteController;
 import dat.controllers.impl.SpiceController;
 import dat.daos.FavoriteDao;
 import dat.daos.SpiceDao;
+import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -22,10 +23,11 @@ public class FavoriteRoute {
 
         return () -> {
             post("/{username}/favorites", favoriteController::create);
-            post("/{username}/favorites", favoriteController::create);
             get("/", favoriteController::readAll);
             get("/{userId}/favorites", favoriteController::read);
             delete("/{userId}/favorites/{spiceId}", favoriteController::delete);
+            post("/{username}/favorites/{spiceId}", favoriteController::createSpiceFavorite);
+
         };
     }
 }

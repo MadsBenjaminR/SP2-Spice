@@ -37,4 +37,8 @@ public class FavoriteDTO {
         this.name = favorite.getName();
     }
 
+    public FavoriteDTO(String username, Long id) {
+        this.username = username;
+        this.id = id;
+    }
 }

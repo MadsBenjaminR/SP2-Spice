@@ -1,6 +1,16 @@
 GET {{url}}/users/
 ###
 
+
+GET{{url}}/
+###
+GET {{url}}/users/1/favorites
+
+###
+POST {{url}}/
+###
+POST {{url}}/users/user2/favorites/2
+###
 POST {{url}}/users/user2/favorites
 Content-Type: application/json
 
@@ -12,3 +22,4 @@ Content-Type: application/json
 ###
 GET {{url}}/users/2/favorites
 
+kka
