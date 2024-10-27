@@ -1,18 +1,19 @@
 package dat.controllers.impl;
 
 import dat.controllers.IController;
+import dat.daos.CuisineDao;
 import dat.daos.FavoriteDao;
 import dat.daos.SpiceDao;
+import dat.dtos.CuisineDTO;
 import dat.dtos.FavoriteDTO;
 import dat.dtos.SpiceDTO;
-import dat.entities.Favorite;
-import dat.entities.Spice;
 import dat.security.daos.SecurityDAO;
 import dat.security.entities.User;
 import dat.security.exceptions.ApiException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import jakarta.persistence.EntityManagerFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +28,7 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
 
     private final Logger log = LoggerFactory.getLogger(FavoriteController.class);
     private FavoriteDao favoriteDao;
-    private SpiceDao spiceDao;
-    EntityManagerFactory emf;
+
 
     public FavoriteController(FavoriteDao favoriteDao){
         this.favoriteDao= favoriteDao;
@@ -84,25 +84,30 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
             throw new ApiException(400, e.getMessage());
         }
     }
-    public void createSpiceFavorite(Context ctx){
+    public void createSpiceFavorite(Context ctx) {
         try {
             String username = ctx.pathParam("username");
             Long spiceId = Long.valueOf(ctx.pathParam("spiceId"));
 
             User user = SecurityDAO.getUserFromUsername(username);
-            SpiceDTO getSpiceFromSpiceId=SpiceDao.read(spiceId);
-            List<FavoriteDTO> favoriteList=favoriteDao.getFavoriteFromUser(user);
-            System.out.println(favoriteList.get(1).getId());
+            SpiceDTO spiceDTO = SpiceDao.read(spiceId);  // Ensure `spiceDao` has a read method for Spice
+
+            List<FavoriteDTO> favoriteList = favoriteDao.getFavoriteFromUser(user);
 
 
+            // Update favorites with the new spice
+            FavoriteDTO updatedFavorite = favoriteDao.createSpiceFavoriteList(favoriteList, spiceDTO);
 
+            // Set response status and return the updated favorite
             ctx.status(HttpStatus.CREATED);
-            ctx.json(favoriteDao.createSpiceFavoriteList(favoriteList,getSpiceFromSpiceId));
+            ctx.json(updatedFavorite);
 
 
-
+            ctx.res().setStatus(201);
         } catch (Exception e) {
+            log.error("400{}",e.getMessage());
             throw new ApiException(400, e.getMessage());
+
         }
     }
 
@@ -139,4 +144,27 @@ public class FavoriteController implements IController<FavoriteDTO, Integer> {
         }
     }
 
+    public void createCuisineFavorite(Context ctx) {
+        try {
+            String username = ctx.pathParam("username");
+            Long cuisineId = Long.valueOf(ctx.pathParam("cuisineId"));
+
+            User user = SecurityDAO.getUserFromUsername(username);
+            CuisineDTO cuisineDTO = CuisineDao.read(cuisineId);  // Ensure `spiceDao` has a read method for Spice
+
+            List<FavoriteDTO> favoriteList = favoriteDao.getFavoriteFromUser(user);
+
+            // Update favorites with the new spice
+            FavoriteDTO updatedFavorite = favoriteDao.createCuisineFavoriteList(favoriteList, cuisineDTO);
+
+            // Set response status and return the updated favorite
+            ctx.status(HttpStatus.CREATED);
+            ctx.json(updatedFavorite);
+
+            ctx.res().setStatus(201);
+        } catch (Exception e) {
+            log.error("400{}",e.getMessage());
+            throw new ApiException(400, e.getMessage());
+        }
+    }
 }

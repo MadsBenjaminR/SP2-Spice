@@ -14,6 +14,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +45,7 @@ public class FavoriteDao {
             return query.getResultList();
         }
     }
+
 
     public FavoriteDTO create(FavoriteDTO favoriteDTO, User user) {
         try (EntityManager em = emf.createEntityManager()) {
@@ -91,44 +94,63 @@ public class FavoriteDao {
     }
 
 
+
     public FavoriteDTO createSpiceFavoriteList(List<FavoriteDTO> favoriteDTOList, SpiceDTO spiceDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
 
-            // Find user and spice entities in the database
+            // Retrieve the spice entity using its ID
             Spice spiceEntity = em.find(Spice.class, spiceDTO.getId());
+            
 
-            if (spiceEntity == null) {
-                throw new IllegalArgumentException("Spice not found.");
-            }
-            Favorite favorite = new Favorite();
-            if (favoriteDTOList.size() > 0) {
-                for (FavoriteDTO favoriteDTO : favoriteDTOList) {
-                    favorite.setId(favoriteDTO.getId());
-                    favorite.setId(spiceDTO.getId());
+            // Add the spice to each favorite in the provided list
+            for (FavoriteDTO favoriteDTO : favoriteDTOList) {
+                Favorite favorite = em.find(Favorite.class, favoriteDTO.getId());
+                if (favorite != null) {
+                    favorite.getSpices().add(spiceEntity);
+                    em.merge(favorite);  // Update the favorite in the database
                 }
-
             }
 
-            // Persist the favorite entity
-            em.persist(favorite);
-
-            // Commit the transaction
             em.getTransaction().commit();
-
-            return new FavoriteDTO(favorite);
-
+            return new FavoriteDTO(em.find(Favorite.class, favoriteDTOList.get(0).getId()));
+        } catch (Exception e) {
+            throw new ApiException(500, "Error while creating spice favorite list: " + e.getMessage());
         }
+    }
 
-
-        }
 
     public List<FavoriteDTO> getFavoriteFromUser(User user) {
         try (EntityManager em = emf.createEntityManager()) {
-            TypedQuery<FavoriteDTO> query = em.createQuery("select f from Favorite f WHERE f.user  = :user", FavoriteDTO.class);
+            TypedQuery<Favorite> query = em.createQuery("select f from Favorite f WHERE f.user  = :user", Favorite.class);
             query.setParameter("user", user);
+            List<Favorite> favoriteEntities = query.getResultList();
+            return favoriteEntities.stream().map(FavoriteDTO::new).toList();
 
-            return query.getResultList();
+
+        }
+    }
+
+    public FavoriteDTO createCuisineFavoriteList(List<FavoriteDTO> favoriteList, CuisineDTO cuisineDTO) {
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+
+            // Retrieve the spice entity using its ID
+            Cuisine cuisineEntity = em.find(Cuisine.class, cuisineDTO.getId());
+
+            // Add the spice to each favorite in the provided list
+            for (FavoriteDTO favoriteDTO : favoriteList) {
+                Favorite favorite = em.find(Favorite.class, favoriteDTO.getId());
+                if (favorite != null) {
+                    favorite.getCuisines().add(cuisineEntity);
+                    em.merge(favorite);  // Update the favorite in the database
+                }
+            }
+
+            em.getTransaction().commit();
+            return new FavoriteDTO(em.find(Favorite.class, favoriteList.get(0).getId()));
+        } catch (Exception e) {
+            throw new ApiException(500, "Error while creating spice favorite list: " + e.getMessage());
         }
     }
 }

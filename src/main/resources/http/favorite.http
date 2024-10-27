@@ -9,17 +9,15 @@ GET {{url}}/users/1/favorites
 ###
 POST {{url}}/
 ###
-POST {{url}}/users/user2/favorites/2
+POST {{url}}/users/user1/favorites/spices/9
 ###
-POST {{url}}/users/user2/favorites
+POST {{url}}/users/user1/favorites
 Content-Type: application/json
 
 {
   "username": "hej",
-  "name": "abc"
+  "name": "abcde"
 }
 
 ###
-GET {{url}}/users/2/favorites
-
-kka
+POST {{url}}/users/user1/favorites/cuisines/2
