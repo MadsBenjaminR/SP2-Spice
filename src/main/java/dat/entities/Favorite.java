@@ -39,6 +39,7 @@ public class Favorite {
     )private Set<Cuisine> cuisines;
 
     @ManyToMany
+    @EqualsAndHashCode.Exclude
     @JoinTable(
             name = "spice_favorite",
             joinColumns = {@JoinColumn(name = "favorite_id", referencedColumnName = "favorite_id")},

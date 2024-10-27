@@ -26,7 +26,9 @@ public class FavoriteRoute {
             get("/", favoriteController::readAll);
             get("/{userId}/favorites", favoriteController::read);
             delete("/{userId}/favorites/{spiceId}", favoriteController::delete);
-            post("/{username}/favorites/{spiceId}", favoriteController::createSpiceFavorite);
+            post("/{username}/favorites/spices/{spiceId}", favoriteController::createSpiceFavorite);
+            post("/{username}/favorites/cuisines/{cuisineId}", favoriteController::createCuisineFavorite);
+
 
         };
     }

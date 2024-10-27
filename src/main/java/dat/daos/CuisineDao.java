@@ -28,7 +28,7 @@ public class CuisineDao {
         this.emf = emf;
     }
 
-    public CuisineDTO read(Long id) {
+    public static CuisineDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             Cuisine cuisine = em.find(Cuisine.class, id);
             return new CuisineDTO(cuisine);
