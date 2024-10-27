@@ -22,12 +22,12 @@ public class FavoriteRoute {
     protected EndpointGroup getRoutes() {
 
         return () -> {
-            post("/{username}/favorites", favoriteController::create);
-            get("/", favoriteController::readAll);
-            get("/{userId}/favorites", favoriteController::read);
-            delete("/{userId}/favorites/{spiceId}", favoriteController::delete);
-            post("/{username}/favorites/spices/{spiceId}", favoriteController::createSpiceFavorite);
-            post("/{username}/favorites/cuisines/{cuisineId}", favoriteController::createCuisineFavorite);
+            post("/{username}/favorites", favoriteController::create,Role.USER);
+            get("/", favoriteController::readAll,Role.ANYONE);
+            get("/{userId}/favorites", favoriteController::read,Role.USER);
+            delete("/{userId}/favorites/{spiceId}", favoriteController::delete,Role.USER);
+            post("/{username}/favorites/spices/{spiceId}", favoriteController::createSpiceFavorite,Role.USER);
+            post("/{username}/favorites/cuisines/{cuisineId}", favoriteController::createCuisineFavorite,Role.USER);
 
 
         };

@@ -4,6 +4,7 @@ import dat.controllers.impl.CuisineController;
 import dat.controllers.impl.SpiceController;
 import dat.daos.CuisineDao;
 import dat.daos.SpiceDao;
+import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -22,11 +23,11 @@ public class CuisineRoute {
 
         return () -> {
             //Usercontroller skal laves og metoderne skal laves
-            post("/cuisine", cuisineController::create);
-            get("/", cuisineController::readAll);
-            get("/cuisine/{id}", cuisineController::read);
-            put("/cuisine/{id}", cuisineController::update);
-            delete("/cuisine/{id}", cuisineController::delete);
+            post("/cuisine", cuisineController::create, Role.ADMIN);
+            get("/", cuisineController::readAll, Role.ANYONE);
+            get("/cuisine/{id}", cuisineController::read,Role.ANYONE);
+            put("/cuisine/{id}", cuisineController::update,Role.ADMIN);
+            delete("/cuisine/{id}", cuisineController::delete,Role.ADMIN);
 
 
         };
