@@ -8,6 +8,7 @@ GET {{url}}/spices/spice/2
 
 POST {{url}}/spices/spice
 Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
 
 {
   "name": "Pepperroot",
@@ -20,6 +21,8 @@ Content-Type: application/json
 
 PUT {{url}}/spices/spice/3
 Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
 
 {
   "name": "cinnamon",
@@ -30,5 +33,7 @@ Content-Type: application/json
 ###
 
 DELETE {{url}}/spices/spice/2
+Authorization: Bearer {{jwt_token}}
+
 
 ###

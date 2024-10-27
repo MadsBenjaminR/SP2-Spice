@@ -2,6 +2,7 @@ package dat.routes;
 
 import dat.controllers.impl.SpiceController;
 import dat.daos.SpiceDao;
+import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -19,18 +20,12 @@ public class SpiceRoute {
     protected EndpointGroup getRoutes() {
 
         return () -> {
-            post("/spice", spiceController::create);
-            get("/", spiceController::readAll);
-            get("/spice/{id}", spiceController::read);
-            //disse skal udvikles:
+            post("/spice", spiceController::create, Role.ADMIN);
+            get("/", spiceController::readAll,Role.ANYONE);
+            get("/spice/{id}", spiceController::read,Role.ANYONE);
 
-            get("/search", spiceController::read);
-            get("/filter", spiceController::read);
-            get("/recommendations", spiceController::read);
-
-            //
-            put("/spice/{id}", spiceController::update);
-            delete("/spice/{id}", spiceController::delete);
+            put("/spice/{id}", spiceController::update, Role.ADMIN);
+            delete("/spice/{id}", spiceController::delete,Role.ADMIN);
         };
     }
 }

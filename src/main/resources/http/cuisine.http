@@ -8,6 +8,8 @@ GET {{url}}/cuisines/cuisine/1
 
 POST {{url}}/cuisines/cuisine
 Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
 
 {
   "name": "Danish",
@@ -20,6 +22,8 @@ Content-Type: application/json
 
 PUT {{url}}/cuisines/cuisine/3
 Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
 
 {
   "name": "Indian2",
@@ -30,5 +34,7 @@ Content-Type: application/json
 ###
 
 DELETE {{url}}/cuisines/cuisine/1
+Authorization: Bearer {{jwt_token}}
+
 
 ###
